@@ -40,7 +40,6 @@ const Header = () => {
         params: {
           tags: checked.length && checked.join(","),
           limit: text,
-          author: values,
         },
       })
 
@@ -57,30 +56,23 @@ const Header = () => {
   // console.log(data);
 
   const fetchByRandomQuotes = () => {
-    axios
-      .get("https://api.quotable.io/random")
-      .then((resp) => {
-        console.log("resp", resp);
-        setData({
-          // data: {
-            data: { results: [resp.data] },
-          // },
-        });
+    axios.get("https://api.quotable.io/random").then((resp) => {
+      console.log("resp", resp);
+      setData({
+        // data: {
+        data: { results: [resp.data] },
+        // },
       });
+    });
   };
 
   const fetchByRandomAuthors = () => {
-    axios
-      .get("https://quotable.io/authors?sortBy=name&order=asc")
-      .then((resp) => {
-        setData({
-          
-          data: {results:[resp]}
-        }
-          );
-      });
+    axios.get("https://quotable.io/quotes?page=2").then((resp) => {
+      setData(resp);
+    });
   };
-  console.log('********',data?.data)
+
+  console.log("********", data?.data);
   const quotes = data?.data?.results;
 
   return (
@@ -149,10 +141,14 @@ const Header = () => {
               className="shuffle_icon"
               onClick={() => fetchByRandomQuotes()}
             ></img>
-            <label className="text">Generate Random Quotes</label>
+            <label className="text">Generate Random Quote</label>
           </div>
           <div className="author_quotes">
-            <img src={shuffle} className="shuffle_icon"   onClick={() => fetchByRandomAuthors()}></img>
+            <img
+              src={shuffle}
+              className="shuffle_icon"
+              onClick={() => fetchByRandomAuthors()}
+            ></img>
             <label className="text">Generate Random Authors</label>
           </div>
         </div>

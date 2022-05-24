@@ -12,7 +12,7 @@ const Dropdown = ({setValues,values}) => {
             class="select__field"
             required
             onChange={(e) => setValues(e.target.value)}
-            id="valuess"
+            id="values"
             value={values}
           >
            
