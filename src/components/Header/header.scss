@@ -5,8 +5,9 @@
   padding: 1rem 2rem 1rem 2rem;
 }
 .logo {
- height: 70px;
+ height: 60px;
   padding-left: 3rem;
+  padding-right: 0.5rem;
 }
 .header {
   font-size: 44px;
@@ -19,7 +20,7 @@
   align-items: center;
 }
 .filters-heading {
-  font-size: 30px;
+  font-size: 20px;
   color: #000000;
   font-weight: 500;
 }
@@ -35,7 +36,7 @@ display: flex;
   display: flex;
   border: 1px solid #c4c4c4;
   width: 100%;
-  margin-top:2rem
+  margin-top:1rem
 
   
 }
@@ -44,9 +45,10 @@ height: 50px;
 width: 50px;
 }
 .generate_quotes{
-  padding-top: 2rem;
+  padding-top: 3rem;
   display: flex;
   justify-content: space-between;
+  padding-bottom: 2rem;
 }
 .text{
   font-size: 28px;
@@ -56,6 +58,7 @@ width: 50px;
 }
 .author_quotes{
 padding-right: 10rem;
+
 }
 .main_grid{
 padding-right: 10rem;
@@ -74,14 +77,10 @@ column-gap: 50px;
   padding: 2rem;
   padding: 10px;
   border: 1px solid  #c4c4c4;
-  box-shadow:  -1px 1px  #c4c4c4,
-       -2px 2px  #c4c4c4,
-       -3px 3px  #c4c4c4,
-       -4px 4px  #c4c4c4,
-       -5px 5px  #c4c4c4;
+  box-shadow: 5px 10px 18px #888888;
 }
 .btn{
-  padding: 1rem;
+  padding: 0.5rem;
   width: 20%;
   background-color: #4cd084;
   color: #ffff;
@@ -90,7 +89,7 @@ column-gap: 50px;
 }
 .limit-style{
  padding: 0.7rem;
- border:  3px solid #c4c4c4;
+ border:  1px solid #c4c4c4;
  outline: none;
 }
 .submit-btn-container{
