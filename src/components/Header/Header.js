@@ -15,15 +15,23 @@ const checkBox = [
   "friendship",
 ];
 const Header = () => {
-  const [data, setData] = useState("");
+  const [Items, setItems] = useState([]);
+  const [data, setData] = useState([]);
   const [checked, setChecked] = useState([]);
   const [text, setText] = useState(0);
   const [values, setValues] = useState("");
+  const [page, setPage] = useState(1);
+  const [list, setList] = useState([]);
+  const [limit, setLimit] = useState(10);
   const [filters, setFilters] = useState({
     dropDown: "",
     limit: 0,
     checkBoxes: [],
   });
+  const [isFetching, setIsFetching] = useState(false);
+  // const [page, setPage] = useState(0);
+  //we need to know if there is more data
+  const [HasMore, setHasMore] = useState(true);
   console.log("$#$#$#$#$#$#", filters);
   const handleCheck = (event) => {
     var updatedList = [...checked];
@@ -44,36 +52,71 @@ const Header = () => {
       })
 
       .then((resp) => {
-        setData(resp);
+        setData(resp?.data?.results);
+        // console.log(resp?.data, "preranaa");
       });
   };
-  useEffect(() => {
-    axios.get("https://quotable.io/quotes").then((resp) => {
-      setData(resp);
-    });
-    // fetchQuotes();
-  }, []);
-  // console.log(data);
 
   const fetchByRandomQuotes = () => {
     axios.get("https://api.quotable.io/random").then((resp) => {
-      console.log("resp", resp);
+      console.log("resp", resp?.data);
       setData({
-        // data: {
-        data: { results: [resp.data] },
-        // },
+        data: { results: [resp?.data] },
       });
+      // setData(resp?.data)
+    
     });
   };
 
   const fetchByRandomAuthors = () => {
     axios.get("https://quotable.io/quotes?page=2").then((resp) => {
-      setData(resp);
+      // setData(resp);
+      setData(resp?.data?.results)
+     
     });
   };
 
-  console.log("********", data?.data);
-  const quotes = data?.data?.results;
+  console.log("********", data);
+
+  const InfiniteScrolling = async () => {
+    const res = await axios.get("https://quotable.io/quotes", {
+      params: {
+        page: page,
+        limit: limit,
+      },
+    });
+    setData(res.data.results);
+    console.log("hjasgdjha", res.data.results);
+  };
+
+  const handleListner = () => {
+    const ht = window.innerHeight + document.documentElement.scrollTop;
+    const offht = document.documentElement.offsetHeight;
+    console.log("offht", offht);
+    console.log("ht", ht);
+    if (Math.round(ht) >= offht) {
+      setLimit(limit + 10);
+      InfiniteScrolling();
+      setPage(page + 1);
+      InfiniteScrolling();
+    }
+  };
+  const removeEventListener = () => {
+    window.removeEventListener("scroll", () => {});
+  };
+  useEffect(() => {
+    return () => {
+      removeEventListener();
+    };
+  }, []);
+
+  useEffect(() => {
+    InfiniteScrolling();
+    window.addEventListener("scroll", handleListner);
+  }, []);
+  // const quotes = data?.data?.results;
+  const quotes = data;
+  console.log("rutika", data);
 
   return (
     <div className="container">
@@ -167,6 +210,13 @@ const Header = () => {
           })}
         </div>
       </div>
+      <button
+        onClick={() => {
+          InfiniteScrolling();
+        }}
+      >
+        load more
+      </button>
     </div>
   );
 };
