@@ -15,14 +15,14 @@ const checkBox = [
   "friendship",
 ];
 const Header = () => {
-  const [Items, setItems] = useState([]);
+  const [Items, setItems] = useState(false);
   const [data, setData] = useState([]);
   const [checked, setChecked] = useState([]);
   const [text, setText] = useState(0);
   const [values, setValues] = useState("");
   const [page, setPage] = useState(1);
   const [list, setList] = useState([]);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(20);
   const [filters, setFilters] = useState({
     dropDown: "",
     limit: 0,
@@ -53,26 +53,38 @@ const Header = () => {
 
       .then((resp) => {
         setData(resp?.data?.results);
+
         // console.log(resp?.data, "preranaa");
       });
   };
 
+  useEffect(() => {
+    axios.get("https://quotable.io/quotes").then((res) => {
+      // setData(resp?.data?.results);
+      {
+        !Items
+          ? setData(res.data.results.slice(0, 2))
+          : setData(res.data.results);
+      }
+      console.log("shantanu", res);
+    });
+    // fetchQuotes();
+  }, []);
+
   const fetchByRandomQuotes = () => {
     axios.get("https://api.quotable.io/random").then((resp) => {
       console.log("resp", resp?.data);
-      setData({
-        data: { results: [resp?.data] },
-      });
-      // setData(resp?.data)
-    
+      // setData({
+      //   data: { results: [resp?.data] },
+      // });
+      setData([resp?.data]);
     });
   };
 
   const fetchByRandomAuthors = () => {
     axios.get("https://quotable.io/quotes?page=2").then((resp) => {
       // setData(resp);
-      setData(resp?.data?.results)
-     
+      setData(resp?.data?.results);
     });
   };
 
@@ -85,35 +97,42 @@ const Header = () => {
         limit: limit,
       },
     });
-    setData(res.data.results);
-    console.log("hjasgdjha", res.data.results);
-  };
-
-  const handleListner = () => {
-    const ht = window.innerHeight + document.documentElement.scrollTop;
-    const offht = document.documentElement.offsetHeight;
-    console.log("offht", offht);
-    console.log("ht", ht);
-    if (Math.round(ht) >= offht) {
-      setLimit(limit + 10);
-      InfiniteScrolling();
-      setPage(page + 1);
-      InfiniteScrolling();
+    setItems(true);
+    // setData(res.data.results);
+    // console.log("hjasgdjha", res.data.results);
+    {
+      !Items
+        ? setData(res.data.results.slice(0, 2))
+        : setData(res.data.results);
     }
   };
-  const removeEventListener = () => {
-    window.removeEventListener("scroll", () => {});
-  };
-  useEffect(() => {
-    return () => {
-      removeEventListener();
-    };
-  }, []);
 
-  useEffect(() => {
-    InfiniteScrolling();
-    window.addEventListener("scroll", handleListner);
-  }, []);
+  // const handleListner = () => {
+  //   const ht = window.innerHeight + document.documentElement.scrollTop;
+  //   const offht = document.documentElement.offsetHeight;
+  //   console.log("offht", offht);
+  //   console.log("ht", ht);
+  //   if (Math.round(ht) >= offht) {
+  //     setLimit(limit + 10);
+  //     InfiniteScrolling();
+  //     setPage(page + 1);
+  //     InfiniteScrolling();
+  //   }
+  // };
+  // const removeEventListener = () => {
+  //   window.removeEventListener("scroll", () => {});
+  // };
+  // useEffect(() => {
+  //   return () => {
+  //     removeEventListener();
+  //   };
+  // }, []);
+
+  // useEffect(() => {
+  //   InfiniteScrolling();
+  //   window.addEventListener("scroll", handleListner);
+  // }, []);
+
   // const quotes = data?.data?.results;
   const quotes = data;
   console.log("rutika", data);
